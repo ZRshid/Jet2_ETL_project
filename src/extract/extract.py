@@ -1,5 +1,6 @@
+from src.utils.db_conn import conn_database
 import csv
-from utils.db_conn import conn_database
+
 
 def to_csv(data:list[dict],file_path)-> str :
 
@@ -33,10 +34,11 @@ def to_csv(data:list[dict],file_path)-> str :
             csv_writer = csv.DictWriter(file,fieldnames=fieldnames)
             csv_writer.writeheader()
             csv_writer.writerows(data)
-            print("Data has been written to file")
+           
             return f"status: success, rows_written: {len(data)} rows"    
     except Exception as error:
-        print(f"The following error has occured {error}")
+        raise Exception(f"The following error has occured {error}")
+       
 
 initial = conn_database()
 second = to_csv(initial,"/home/zakii/Project/Jet2_ETL_project/data/raw_data.csv")

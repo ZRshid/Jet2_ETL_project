@@ -12,7 +12,7 @@ def conn_database():
     try:
         print("starting")
         conn = psycopg2.connect(
-            dbname=os.getenv('pg_DATABASE'),
+            dbname=os.getenv('PG_DATABASE'),
             user=os.getenv("PG_USER"),
             password=os.getenv("PG_PASSWORD"),
             host=os.getenv("PG_HOST"),
