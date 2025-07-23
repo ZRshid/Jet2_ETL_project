@@ -1,2 +1,11 @@
 .env
 __pycache__/
+*.tfstate
+*.tfstate.backup
+.terraform/
+*.tfplan
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.csv

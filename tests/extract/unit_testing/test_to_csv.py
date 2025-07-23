@@ -1,4 +1,4 @@
-from src.extract.extract import to_csv
+from src.utils.to_csv import to_csv
 import pytest
 import csv
 
