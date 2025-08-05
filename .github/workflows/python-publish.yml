@@ -1,38 +1,52 @@
-
-# 👷‍♂️ A: Name of the workflow
-name: Python CI Pipeline   # This is the name of your CI pipeline. It will show up in the GitHub Actions interface.
-
-# 🚀 G: Triggers - when should this workflow run?
+name: CI ETL project
 on:
-  push:                    # Trigger the pipeline when you push code changes to the repository.
-    branches: [main]        # Only runs when the push is to the 'main' branch.
-  pull_request:             # Trigger the pipeline when a pull request is made.
-    branches: [main]        # It only runs if the pull request is trying to merge into the 'main' branch.
+  push:
+    branches: [ "main"]
+  pull_request:
+    branches: [ "main" ]
 
-# 🧱 O: Define the job
 jobs:
-  test:                     # This is the name of the job. You could name it anything, but it's called "test" here.
-    runs-on: ubuntu-latest   # Specifies the environment to run the job on. "ubuntu-latest" means it will run on the latest version of Ubuntu.
+  test_python:
+    name: Test Python
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      
+      - run: echo "Beginning tests"
+      
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.12'
 
-steps:  # These are the individual steps of the CI pipeline. It’s like a list of actions the pipeline will execute.
+      - name: Install dependencies   
+        run: |                      
+           python -m pip install --upgrade pip    
+           pip install -r requirements.txt
+      - name: Run tests                 
+        run: |                          
+           pytest                    
 
-  # 📥 1. Annotation: Checkout repo code
-  - name: Checkout code         # This step is for fetching the code from the repository.
-    uses: actions/checkout@v3   # The GitHub Action 'checkout' is used here to pull the latest code from the repository.
-    
-  # 🐍 2. Setup Python
-  - name: Set up Python            # This step sets up Python on the runner environment so you can run Python code.
-    uses: actions/setup-python@v4  # 'setup-python' is a pre-built action by GitHub to install Python.
-    with:                          # The 'with' keyword allows us to pass arguments into the action.
-      python-version: '3.10'       # Specifies the Python version we want to use, which is Python 3.10 in this case.
-
-  # 📦 3. Install dependencies
-  - name: Install dependencies      # This step installs all the necessary libraries and packages required for the project.
-    run: |                         # 'run' allows us to run shell commands.
-      python -m pip install --upgrade pip    # First, we make sure 'pip' (Python's package manager) is up-to-date.
-      pip install -r requirements.txt  # Then, we install the dependencies listed in the 'requirements.txt' file.
-    
-  # 🧪 4. Run tests using pytest
-  - name: Run tests                 # This step runs the tests to check if everything is working fine.
-    run: |                          # Again, we use 'run' to execute shell commands.
-      pytest                        # 'pytest' is a testing framework that finds and runs tests in the project.
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWSACCESSKEYID }}
+          aws-secret-access-key: ${{ secrets.AWSSECRETACCESSKEY }}
+          aws-region: ${{ secrets.AWSREGION }}
+      - name: Setup Terraform 
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+      - name: Initialise Terraform
+        working-directory: terraform
+        run: terraform init
+      - name: Plan Terraform
+        working-directory: terraform
+        run: terraform plan
+      - name: Apply Terraform
+        working-directory: terraform
+        run: terraform apply -auto-approve
+     
