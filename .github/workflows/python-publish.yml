@@ -9,6 +9,8 @@ jobs:
   test_python:
     name: Test Python
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     permissions:
       contents: read
     steps:
@@ -21,9 +23,6 @@ jobs:
         uses: actions/setup-python@v5
         with: 
           python-version: '3.13'
-
-      - name: Set Python Path
-        run: echo "PYTHONPATH=${{ github.workspace }}/python" >> $GITHUB_ENV
 
       - name: Install dependencies   
         run: |                      
