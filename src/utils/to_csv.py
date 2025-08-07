@@ -1,4 +1,4 @@
-from utils.db_conn import conn_database
+from src.utils.db_conn import conn_database
 import logging 
 import csv
 
