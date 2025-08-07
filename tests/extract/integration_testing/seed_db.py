@@ -4,6 +4,8 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 def seed_db():
+    conn = None
+    cursor = None
     try:
         conn = psycopg2.connect(
             dbname=os.getenv('PG_DATABASE_test'),
@@ -65,8 +67,10 @@ def seed_db():
     except Exception as e:
         print(f"error:{e}")
     finally:
-        cursor.close()
-        conn.close()
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 seed_db()
 
