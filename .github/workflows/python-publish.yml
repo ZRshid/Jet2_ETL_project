@@ -20,7 +20,7 @@ jobs:
       - name: Set Up Python
         uses: actions/setup-python@v5
         with: 
-          python-version: '3.12'
+          python-version: '3.13'
 
       - name: Install dependencies   
         run: |                      
@@ -36,17 +36,4 @@ jobs:
           aws-access-key-id: ${{ secrets.AWSACCESSKEYID }}
           aws-secret-access-key: ${{ secrets.AWSSECRETACCESSKEY }}
           aws-region: ${{ secrets.AWSREGION }}
-      - name: Setup Terraform 
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.1.7"
-      - name: Initialise Terraform
-        working-directory: terraform
-        run: terraform init
-      - name: Plan Terraform
-        working-directory: terraform
-        run: terraform plan
-      - name: Apply Terraform
-        working-directory: terraform
-        run: terraform apply -auto-approve
      
