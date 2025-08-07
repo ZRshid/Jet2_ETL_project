@@ -23,8 +23,7 @@ jobs:
           python-version: '3.13'
 
       - name: Set Python Path
-        run: |
-          run: echo "PYTHONPATH=${{ github.workspace }}/python" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=${{ github.workspace }}/python" >> $GITHUB_ENV
 
       - name: Install dependencies   
         run: |                      
