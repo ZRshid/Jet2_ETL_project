@@ -1,3 +1,4 @@
+
 import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime
@@ -18,17 +19,18 @@ def save_data_to_s3_bucket(bucket_name:str, file_path:str):
 
     s3_client = boto3.client("s3", region_name='eu-west-2')
     try:
+        logging.info(f"Starting the process of uploading data into the following {bucket_name}")
+
         now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         s3_client.upload_file(
-            Filename=file_path,  # e.g. 'data/mydata.csv'
-            Bucket=bucket_name,
-            Key=f"{file_path}{now}.csv"
-        )
-        logging.info(f"You have successsfully uploaded data to the {bucket_name}")
-        print(f"You have successsfully uploaded data to {bucket_name}")
+            Bucket=bucket_name, 
+            Filename=file_path,  
+            Key=f"{file_path}{now}")
+        logging.info(f"You have successsfully uploaded data to the {bucket_name} bucket")
     except ClientError as error:
         logging.error(f"The following error has occured {error}")
         raise ClientError(f"The following {error.response} has taken place")
 
 if __name__ == "main":
     save_data_to_s3_bucket()
+  

@@ -1,8 +1,9 @@
 import psycopg2
+from io import BytesIO
 import os 
 from dotenv import find_dotenv, load_dotenv
 import logging
-
+import pandas as pd
 
 load_dotenv(find_dotenv())
 
@@ -11,7 +12,7 @@ def conn_database():
     This function reads database credentials from env variables and connects to the required database which allows the extraction of data to occur.
     """
     try:
-        print("starting")
+       
         logging.info("Initiating DB connection")
         conn = psycopg2.connect(
             dbname=os.getenv('PG_DATABASE'),
@@ -22,25 +23,27 @@ def conn_database():
         )
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM jet2_bookings")
-     
-        description = cursor.description
-        column_names = [col[0] for col in description]
-        data = [dict(zip(column_names, row))  
-                for row in cursor.fetchall()]
-        print(f"You have succesfully extracted data from the db")
+        rows = cursor.fetchall()
+
+        data=[row for row in rows]
+        names_of_columns = [col[0] for col in cursor.description]
+
+        df  = pd.DataFrame(list(data))
+        df.columns = names_of_columns
+                       
+      
         logging.info("You have succesfully extracted data from the db")
-        return data
+        return df
+
     except Exception as error:
         logging.error(f"The following error has occured {error}")
         raise Exception(f"The following error has occured {error}")
-      
-    
     finally:
        cursor.close()
        conn.close()
 
 
-
+       
 if __name__ == "__main__":
     conn_database()
-    
+ 
