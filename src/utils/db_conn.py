@@ -8,9 +8,9 @@ import pandas as pd
 load_dotenv(find_dotenv())
 
 def conn_database():
-    """
-    This function reads database credentials from env variables and connects to the required database which allows the extraction of data to occur.
-    """
+    """Connect to the database, get all records from the jet2_bookings table,
+    and return it as a table (DataFrame)."""
+   
     try:
        
         logging.info("Initiating DB connection")
@@ -31,7 +31,6 @@ def conn_database():
         df  = pd.DataFrame(list(data))
         df.columns = names_of_columns
                        
-      
         logging.info("You have succesfully extracted data from the db")
         return df
 
@@ -39,11 +38,12 @@ def conn_database():
         logging.error(f"The following error has occured {error}")
         raise Exception(f"The following error has occured {error}")
     finally:
-       cursor.close()
-       conn.close()
-
-
+       if cursor in locals():
+          cursor.close()
+       if conn in locals():
+           conn.close()
        
 if __name__ == "__main__":
-    conn_database()
+    data=conn_database()
+    data.head()
  

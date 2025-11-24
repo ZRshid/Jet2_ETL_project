@@ -1,9 +1,5 @@
-from ..utils.db_conn import conn_database
 import pandas as pd
-import pyarrow as pa
-import pyarrow.parquet as pq
 import logging
-
 
 def to_parquet(df:pd.DataFrame):
     """
@@ -11,7 +7,7 @@ def to_parquet(df:pd.DataFrame):
     Args:
         df(pd:DataFrame): Df that will be converted to parquet format.
     Returns:
-         Returns data that is in parquet format.
+         Returns data that in parquet format.
     Raises:
         Exception: If there is an exception when saving when converting DF
     """
@@ -19,9 +15,12 @@ def to_parquet(df:pd.DataFrame):
         logging.info("Starting the process of converting DF into parquet format")
         df.to_parquet('output.parquet', engine='pyarrow', index=False)
         logging.info('Data has been succesfully converted to parquet format')
+        return df
     except Exception as error:
         logging.error(f'The following error has occured {error}')
         raise error
        
 if __name__ == "__main__":
-    to_parquet()
+    import pandas as pd
+    df_example = pd.DataFrame({'a':[1,2], 'b':[3,4]})
+    to_parquet(df_example)
