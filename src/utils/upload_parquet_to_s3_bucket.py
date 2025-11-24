@@ -27,6 +27,6 @@ def upload_parquet_data_to_s3_bucket(bucket_name:str, file_path:str):
             Filename=file_path,
             Key=f"{file_path}_{now}")
         logging.info(f"You have successsfully uploaded data to the {bucket_name} bucket")
-    except ClientError as error:
-        logging.error(f"The following error has occured {error}")
-        raise ClientError(f"The following {error.response} has taken place")
+    except ClientError as e:
+        logging.error(f"The following error has occured {e}")
+        raise ClientError(f"The following {e.response} has taken place")
