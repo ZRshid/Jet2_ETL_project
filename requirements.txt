@@ -19,6 +19,8 @@ pytest==8.4.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 PyYAML==6.0.2
+pandas== 2.3.3
+pyarrow<21.0.0,>=18.0.0
 requests==2.32.4
 responses==0.25.7
 s3transfer==0.13.1
