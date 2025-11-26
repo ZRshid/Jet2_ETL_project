@@ -19,7 +19,6 @@ def upload_parquet_data_to_s3_bucket(bucket_name:str, file_path:str):
     """
     s3_client = boto3.client("s3", region_name='eu-west-2')
     try:
-       
         logging.info(f"Starting the process of uploading data into the following {bucket_name}")
         s3_client.upload_file(
             Bucket=bucket_name, 
