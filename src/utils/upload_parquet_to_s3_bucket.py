@@ -1,7 +1,7 @@
 import boto3
 import logging 
 from botocore.exceptions import ClientError
-from datetime import datetime
+
 
 def upload_parquet_data_to_s3_bucket(bucket_name:str, file_path:str):
     """

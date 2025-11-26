@@ -1,12 +1,7 @@
 import pandas as pd 
-from convert_file_to_DF import convert_buffer_file_to_df
-from get_parquet_file_from_s3 import download_parquet_file_from_s3
 import logging
-import os
 from dotenv import find_dotenv, load_dotenv
-import pyarrow.parquet as pa
 
-import pyarrow.parquet as pq
 load_dotenv(find_dotenv())
 
 def clean_raw_data(df):

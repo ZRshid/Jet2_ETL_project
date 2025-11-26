@@ -19,7 +19,7 @@ def extract_data():
         save_data_to_s3_bucket(bucket_name=os.getenv('INPUT_BUCKET'), file_path=os.getenv('FILE'))
         logging.info(f'data saved to s3 bucket')
     except Exception as e:
-        logging.error(f'Error during ETL process: {str(e)}')
+        logging.error(f'Error during extract process: {str(e)}')
         raise
 
 extract_data()
