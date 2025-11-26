@@ -21,11 +21,10 @@ def upload_parquet_data_to_s3_bucket(bucket_name:str, file_path:str):
     try:
        
         logging.info(f"Starting the process of uploading data into the following {bucket_name}")
-        now = datetime.now().strftime("%Y%m%d_%H%M%S")
         s3_client.upload_file(
             Bucket=bucket_name, 
             Filename=file_path,
-            Key=f"{file_path}_{now}")
+            Key=f"{file_path}")
         logging.info(f"You have successsfully uploaded data to the {bucket_name} bucket")
     except ClientError as e:
         logging.error(f"The following error has occured {e}")

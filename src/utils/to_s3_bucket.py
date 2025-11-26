@@ -24,7 +24,7 @@ def save_data_to_s3_bucket(bucket_name:str, file_path:str):
         logging.info(f"Starting the process of uploading data into the following bucket:{bucket_name}")
 
         now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        key = f"{file_path}_{now}"
+        key = f"{file_path}"
         s3_client.upload_file(
             Bucket=bucket_name, 
             Filename=file_path,  
