@@ -1,14 +1,14 @@
 variable "raw_data_bucket" {
   description = "raw data bucket"
   type        = string
-  default     = "raw-data"
+  default     = "raw-data-za"
 }
 
 # Name of the S3 bucket used for storing processed data from the raw_data bucket.
 variable "processed_data_bucket" {
   description = "processed data bucket"
   type        = string
-  default     = "processed-data"
+  default     = "processed-data-za"
 }
 
 variable "aws_region" {
