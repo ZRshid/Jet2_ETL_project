@@ -2,43 +2,26 @@ import pandas as pd
 import logging
 from dotenv import find_dotenv, load_dotenv
 
+
 load_dotenv(find_dotenv())
 
-def clean_raw_data(df):
-    """
-    Cleans and preprocesses the raw data DataFrame for analysis.
-
-    This function performs the following steps:
-    - Fills missing values in columns like 'last_name', 'price', 'booking_source', and 'num_passengers'.
-    - Corrects specific rows in 'booking_date', 'flight_number', and 'return_date' with known values.
-    - Converts date columns ('booking_date', 'departure_date', 'return_date') to datetime format.
-    - Converts 'price' column to numeric type.
-    - Converts all string columns to lowercase for consistency.
-    - Logs information on duplicate records, data summary, and missing booking dates.
-    
-    Args:
-        df (pd.DataFrame): The raw data DataFrame to clean.
-        
-    Returns:
-        pd.DataFrame: The cleaned and preprocessed DataFrame.
-    """
-
+def clean_raw_data():
     try:
+        r = pd.read_csv('data/raw_data.csv')
+        df = pd.DataFrame(r)
         df["last_name"]=df["last_name"].fillna("unknown")
         df.at[9 , "booking_date"]="2025-05-10"
         df.at[21 , "booking_date"]="2025-06-06"
         df.at[27 , "booking_date"]="2025-07-02"
         df.at[35 , "booking_date"]="2025-07-13"
         df.at[41 , "booking_date"]="2025-07-26"
-
         df.at[18 , "flight_number"] ="LS2121"
         df.at[37 , "flight_number"] ="LS2020"
-
         df.at[1, "return_date"] ="2025-08-21"
         df.at[5 , "return_date"] ="2025-07-06"
         df.at[8 , "return_date"] ="2025-07-02"
         df.at[16 ,"return_date"] ="2025-10-09"
-
+        
         index_of_missing_price = df[df["price"].isna()].index
         average_price = df["price"].mean()
         for idx in index_of_missing_price:
@@ -58,6 +41,16 @@ def clean_raw_data(df):
         df['departure_date'] = pd.to_datetime(df['departure_date'])
         df['return_date'] = pd.to_datetime(df['return_date'])
         df['price'] = pd.to_numeric(df['price'])
+        df['price']= df['price'].round(0)
+       
+        conversions_rate=0.88
+        index_of_currency_is_eur = df.loc[df['currency'] == 'eur'].index.to_list()
+        for each_value in index_of_currency_is_eur:
+            df.at[each_value,'price'] = df.at[each_value,'price'] * conversions_rate
+        
+        new_currency = 'gbp'
+        for idx in index_of_currency_is_eur:
+            df.at[idx, 'currency'] = new_currency
     
         for col in df.columns:
             if df[col].dtypes == object:
@@ -66,11 +59,13 @@ def clean_raw_data(df):
         logging.info(df.duplicated().sum())
         logging.info(df.describe())
         logging.info(df["booking_date"].isnull().index)
-        return df 
-    except Exception as e:
-        logging.error(f'Error during data cleaning: {e}')
-        raise
- 
+        
+        print(df)
+               
+    except Exception as err:
+        raise err
 
+
+clean_raw_data()
 
 
