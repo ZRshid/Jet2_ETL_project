@@ -16,8 +16,13 @@ def transform_data():
         logging.info('Cleaning the data')
         cleaned_data = clean_raw_data(df)
         logging.info('The data has now been cleaned and ready for analysis')
-        
+
+        with open("demofile.txt", "w") as f:
+            f.write(str(cleaned_data))
+
         return cleaned_data
+    
+  
     except Exception as e:
         logging.error(f'Error during transform process: {str(e)}')
         raise

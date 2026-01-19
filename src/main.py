@@ -27,5 +27,4 @@ def orchestrate_etl():
         logging.error(f'Error during ETL process: {str(e)}')
         raise
   
-
 orchestrate_etl()
