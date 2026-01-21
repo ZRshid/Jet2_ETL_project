@@ -32,7 +32,7 @@ provider "aws" {
 # # S3 PERMISSIONS POLICY DOCUMENT
 # data "aws_iam_policy_document" "s3_policy" {
 #   statement {
-#     effect    = "Allow"
+#     effect    = "Allow"git 
 #     actions   = ["s3:GetObject", "s3:ListBucket"]
 #     resources = [
 #       aws_s3_bucket.processed_data_bucket.arn,
